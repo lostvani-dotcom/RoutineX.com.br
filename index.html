@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rotina IA | Organizador Inteligente</title>
+  <link rel="stylesheet" href="ui.css" />
+</head>
+<body data-theme="dark">
+  <!-- Fundo decorativo da aplicação -->
+  <div class="bg-orb orb-one"></div>
+  <div class="bg-orb orb-two"></div>
+
+  <div class="page-shell">
+    <!-- Barra superior -->
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Organização inteligente</p>
+        <h1 class="brand-title">Rotina IA</h1>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="themeToggle" class="ghost-btn" type="button">☀️ Modo claro</button>
+        <button id="logoutBtn" class="ghost-btn hidden" type="button">Sair</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Área de autenticação -->
+      <section id="authSection" class="auth-layout">
+        <div class="hero-card panel">
+          <span class="tag">Seu assistente pessoal</span>
+          <h2>Organize tarefas, agenda, hábitos e lembretes em um só lugar.</h2>
+          <p>
+            Um site moderno para automatizar o dia a dia com apoio de IA, relógio em tempo real,
+            agenda inteligente e controle de produtividade.
+          </p>
+
+          <div class="feature-grid">
+            <article>
+              <strong>📅 Agenda completa</strong>
+              <span>Visualização por dia, semana e mês.</span>
+            </article>
+            <article>
+              <strong>⏰ Lembretes</strong>
+              <span>Alertas visuais para não perder compromissos.</span>
+            </article>
+            <article>
+              <strong>🤖 IA integrada</strong>
+              <span>Sugestões rápidas para sua rotina.</span>
+            </article>
+            <article>
+              <strong>🌙 Tema dinâmico</strong>
+              <span>Modo claro e escuro com salvamento automático.</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="auth-card panel">
+          <div class="tab-switch">
+            <button class="tab-btn active" data-auth-tab="login" type="button">Entrar</button>
+            <button class="tab-btn" data-auth-tab="register" type="button">Cadastrar</button>
+          </div>
+
+          <!-- Formulário de login -->
+          <form id="loginForm" class="auth-form">
+            <label>
+              E-mail
+              <input type="email" id="loginEmail" placeholder="voce@email.com" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="loginPassword" placeholder="••••••••" required />
+            </label>
+            <button class="primary-btn" type="submit">Entrar agora</button>
+          </form>
+
+          <!-- Formulário de cadastro -->
+          <form id="registerForm" class="auth-form hidden">
+            <label>
+              Nome
+              <input type="text" id="registerName" placeholder="Seu nome" required />
+            </label>
+            <label>
+              E-mail
+              <input type="email" id="registerEmail" placeholder="voce@email.com" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="registerPassword" placeholder="Crie uma senha" required />
+            </label>
+            <button class="primary-btn" type="submit">Criar conta</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Painel principal da aplicação -->
+      <section id="appSection" class="app-layout hidden">
+        <section class="welcome-banner panel">
+          <div>
+            <p class="eyebrow">Dashboard</p>
+            <h2>Olá, <span id="userNameLabel">usuário</span> 👋</h2>
+            <p id="todayOverviewText">Seu resumo diário aparecerá aqui.</p>
+          </div>
+
+          <div class="clock-box">
+            <strong id="clockTime">00:00:00</strong>
+            <span id="clockDate">Carregando data...</span>
+          </div>
+        </section>
+
+        <!-- Cartões de resumo -->
+        <section class="summary-grid">
+          <article class="summary-card panel">
+            <span>✅ Tarefas de hoje</span>
+            <strong id="todayTasksCount">0/0</strong>
+          </article>
+          <article class="summary-card panel">
+            <span>📌 Eventos do dia</span>
+            <strong id="todayEventsCount">0</strong>
+          </article>
+          <article class="summary-card panel">
+            <span>📈 Progresso diário</span>
+            <strong id="progressPercent">0%</strong>
+          </article>
+        </section>
+
+        <div class="dashboard-grid">
+          <!-- Agenda com filtros e formulário -->
+          <section class="panel">
+            <div class="section-header">
+              <div>
+                <h3>Agenda inteligente</h3>
+                <p>Visualize e organize compromissos.</p>
+              </div>
+              <div class="view-switch">
+                <button class="view-btn active" data-view="day" type="button">Dia</button>
+                <button class="view-btn" data-view="week" type="button">Semana</button>
+                <button class="view-btn" data-view="month" type="button">Mês</button>
+              </div>
+            </div>
+
+            <div id="eventList" class="event-list"></div>
+
+            <form id="eventForm" class="stack-form">
+              <input type="hidden" id="eventId" />
+              <label>
+                Título do evento
+                <input type="text" id="eventTitle" placeholder="Ex: Reunião de planejamento" required />
+              </label>
+              <label>
+                Descrição
+                <textarea id="eventDescription" rows="3" placeholder="Detalhes do compromisso..."></textarea>
+              </label>
+
+              <div class="two-columns">
+                <label>
+                  Data
+                  <input type="date" id="eventDate" required />
+                </label>
+                <label>
+                  Horário
+                  <input type="time" id="eventTime" required />
+                </label>
+              </div>
+
+              <label>
+                Prioridade
+                <select id="eventPriority">
+                  <option value="low">Baixa</option>
+                  <option value="medium">Média</option>
+                  <option value="high">Alta</option>
+                </select>
+              </label>
+
+              <div class="inline-actions">
+                <button class="primary-btn" id="saveEventBtn" type="submit">Salvar evento</button>
+                <button class="ghost-btn" id="cancelEditEvent" type="button">Cancelar edição</button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Tarefas e hábitos -->
+          <section class="panel">
+            <div class="section-header">
+              <div>
+                <h3>Rotina diária</h3>
+                <p>Tarefas, hábitos e foco.</p>
+              </div>
+            </div>
+
+            <div class="routine-block">
+              <h4>Lista de tarefas</h4>
+              <form id="taskForm" class="inline-form">
+                <input type="text" id="taskInput" placeholder="Nova tarefa do dia" required />
+                <button class="primary-btn" type="submit">Adicionar</button>
+              </form>
+              <div id="taskList" class="simple-list"></div>
+            </div>
+
+            <div class="routine-block">
+              <h4>Hábitos diários</h4>
+              <form id="habitForm" class="inline-form">
+                <input type="text" id="habitInput" placeholder="Ex: Beber água" required />
+                <button class="primary-btn" type="submit">Criar hábito</button>
+              </form>
+              <div id="habitList" class="simple-list"></div>
+            </div>
+
+            <div class="progress-card">
+              <div class="progress-top">
+                <strong>Barra de progresso do dia</strong>
+                <span id="dailyProgressText">0 de 0 concluídos</span>
+              </div>
+              <div class="progress-bar">
+                <span id="dailyProgressBar"></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Notificações e lembretes -->
+          <section class="panel">
+            <div class="section-header">
+              <div>
+                <h3>Lembretes</h3>
+                <p>Alertas rápidos e próximos horários.</p>
+              </div>
+            </div>
+
+            <div id="notificationCenter" class="reminder-list"></div>
+
+            <div class="note-box">
+              <strong>⏳ Avisos automáticos</strong>
+              <p>O sistema mostra alertas na tela e avisa quando faltam 10 minutos para um evento.</p>
+            </div>
+
+            <button id="resetDataBtn" class="danger-btn" type="button">Limpar meus dados</button>
+          </section>
+
+          <!-- Assistente virtual -->
+          <section class="panel assistant-panel full-width">
+            <div class="section-header">
+              <div>
+                <h3>Assistente virtual com IA</h3>
+                <p>Pergunte sobre horários, foco e organização.</p>
+              </div>
+            </div>
+
+            <div id="chatMessages" class="chat-box"></div>
+
+            <form id="aiForm" class="inline-form">
+              <input type="text" id="aiInput" placeholder="Ex: monte um cronograma para hoje" required />
+              <button class="primary-btn" type="submit">Enviar</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Container de notificações visuais -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="sla.js"></script>
+</body>
+</html>
